@@ -20,8 +20,7 @@ fn main() -> io::Result<()> {
     
 }
 
-fn find_sum(line: String) -> i32{
-   // let mut values = line.chars();
+fn find_sum(line: String) -> u32{
     let mut numbers = Vec::new();
     let mut substring_vec = Vec::new();
     let mut replacement;
@@ -43,10 +42,8 @@ fn find_sum(line: String) -> i32{
         for j in i..line.len() {
             let substring = &line[i..=j];
 
-            // Check if the substring contains a key in the hashmap
             if word_digit.contains_key(substring) {
                 substring_vec.push(substring);
-               //println!("{:?}", substring_vec);
             }
         }
     }
@@ -59,14 +56,11 @@ fn find_sum(line: String) -> i32{
     let values = new_line.chars();
     for c in values {
         if c.is_digit(10) {
-            let number = (c.to_string()).parse::<i32>().unwrap();
+            let number = (c.to_string()).parse::<u32>().unwrap();
             numbers.push(number);
-            //println!("{}", number);
         } 
     }   
-    //print!("{:?}", numbers);
     complete.push_str(&numbers[0].to_string());
     complete.push_str(&numbers[numbers.len() - 1].to_string());
-    println!("{}", complete);
-    return complete.parse::<i32>().unwrap();
+    return complete.parse::<u32>().unwrap();
 }
