@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::{self, prelude::*, BufReader};
 use std::collections::HashMap;
+use std::collections::BTreeMap;
 
 fn main() -> io::Result<()> {
     let file = File::open("input.txt")?;
@@ -21,10 +22,9 @@ fn main() -> io::Result<()> {
 }
 
 fn find_sum(line: String) -> u32{
-    let mut numbers = Vec::new();
     let mut substring_vec = Vec::new();
-    let mut replacement;
     let mut complete = String::new();
+    let mut indices = BTreeMap::new();
 
     let word_digit = HashMap::from([
         ("one", '1'),
@@ -44,23 +44,31 @@ fn find_sum(line: String) -> u32{
 
             if word_digit.contains_key(substring) {
                 substring_vec.push(substring);
+                indices.insert(i, word_digit.get(substring).unwrap().to_string());
             }
         }
     }
-
-    let mut new_line = line.clone();
-    for entry in substring_vec{
-        replacement = new_line.replace(entry, &word_digit.get(entry).unwrap().to_string());
-        new_line = replacement.clone();
-    }
-    let values = new_line.chars();
-    for c in values {
+    let values = line.chars();
+    let mut counter = 0;
+    for c in values{
         if c.is_digit(10) {
-            let number = (c.to_string()).parse::<u32>().unwrap();
-            numbers.push(number);
+            let number = (c.to_string()).parse::<u32>().unwrap();            
+            indices.insert(counter, c.to_string());
         } 
+        counter += 1;
     }   
-    complete.push_str(&numbers[0].to_string());
-    complete.push_str(&numbers[numbers.len() - 1].to_string());
-    return complete.parse::<u32>().unwrap();
+    if let Some(first_entry) = indices.first_key_value() {
+        let first_value = first_entry.1.to_string();
+
+        if let Some(last_entry) = indices.last_key_value() {
+            let last_value = last_entry.1.to_string();
+            let concatenated = first_value + &last_value;
+            return concatenated.parse::<u32>().unwrap();
+        } else {
+            println!("The BTreeMap is empty.");
+        }
+    } else {
+        println!("The BTreeMap is empty.");
+    }
+    return 0
 }
