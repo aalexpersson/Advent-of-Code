@@ -12,18 +12,15 @@ fn main() -> io::Result<()> {
     for line in reader.lines() {
         value = line.unwrap();
         sum += find_sum(value.clone());
-        find_sum(value);
     }
 
     println!("{}",sum);
 
     Ok(())
-    
 }
 
 fn find_sum(line: String) -> u32{
     let mut substring_vec = Vec::new();
-    let mut complete = String::new();
     let mut indices = BTreeMap::new();
 
     let word_digit = HashMap::from([
@@ -51,8 +48,7 @@ fn find_sum(line: String) -> u32{
     let values = line.chars();
     let mut counter = 0;
     for c in values{
-        if c.is_digit(10) {
-            let number = (c.to_string()).parse::<u32>().unwrap();            
+        if c.is_digit(10) {           
             indices.insert(counter, c.to_string());
         } 
         counter += 1;
