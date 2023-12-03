@@ -14,3 +14,11 @@ fn main() -> io::Result<()> {
     Ok(())
     
 }
+
+fn count(line: String){
+    let maxRed = 12;
+    let maxGreen = 13;
+    let maxBlue = 14;
+
+    
+}

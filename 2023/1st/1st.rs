@@ -7,19 +7,38 @@ fn main() -> io::Result<()> {
     let file = File::open("input.txt")?;
     let reader = BufReader::new(file);
     let mut value;
-    let mut sum = 0;
+    let mut sum1 = 0;
+    let mut sum2 = 0;
 
     for line in reader.lines() {
         value = line.unwrap();
-        sum += find_sum(value.clone());
+        sum1 += find_sum1(value.clone());
+        sum2 += find_sum2(value.clone());
     }
 
-    println!("{}",sum);
+    println!("Sum 1: {}", sum1);
+    println!("Sum 2: {}", sum2);
 
     Ok(())
 }
 
-fn find_sum(line: String) -> u32{
+fn find_sum1(line: String) -> u32{
+    let values = line.chars();
+    let mut numbers = Vec::new();
+    let mut complete = String::new();
+   
+    for c in values{
+        if c.is_digit(10) {           
+            let number = (c.to_string()).parse::<u32>().unwrap();
+            numbers.push(number);
+        } 
+    }   
+    complete.push_str(&numbers[0].to_string());
+    complete.push_str(&numbers[numbers.len() - 1].to_string());
+    return complete.parse::<u32>().unwrap();
+}
+
+fn find_sum2(line: String) -> u32{
     let mut substring_vec = Vec::new();
     let mut indices = BTreeMap::new();
 
